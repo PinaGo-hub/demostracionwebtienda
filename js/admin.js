@@ -121,3 +121,39 @@ document.addEventListener('DOMContentLoaded', function(){
   M.Modal.init(document.querySelectorAll('.modal'));
   AOS.init({duration:1000,once:true});
 });
+
+
+function agregarAlCarrito(id, nombre, precio, imagen){
+  const talla = document.getElementById(`talla-${id}`).value;
+  const cantidad = parseInt(document.getElementById(`cantidad-${id}`).value);
+
+  if(!talla || cantidad <= 0){
+    alert("Selecciona talla y cantidad válida");
+    return;
+  }
+
+  const existente = carrito.find(item => item.id === id && item.talla === talla);
+
+  if(existente){
+    existente.cantidad += cantidad;
+  } else {
+    carrito.push({id, nombre, precio, imagen, talla, cantidad});
+  }
+
+  // Actualizamos el carrito
+  actualizarCarrito();
+
+  // Animación SweetAlert2
+  Swal.fire({
+    icon: 'success',
+    title: '¡Agregado al carrito!',
+    text: `${nombre} (${cantidad} x ${talla})`,
+    showConfirmButton: false,
+    timer: 1500,
+    position: 'top-end',
+    toast: true,
+    background: '#28a745',
+    color: 'white',
+    showCloseButton: true
+  });
+}
